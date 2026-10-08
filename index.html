@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="id"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Aplikasi SPP</title>
+<link rel="stylesheet" href="assets/style.css">
+</head><body>
+<header><h1 id="hdrApp"></h1><h1 id="hdrSekolah"></h1><small id="hdrSub"></small></header>
+<nav><button id="b_bayar" onclick="tab('bayar')" class="on">Pembayaran (Wali Kelas)</button>
+<button id="b_verif" onclick="tab('verif')">Login Koordinator SPP</button>
+<button id="b_vpanel" onclick="tab('vpanel')" hidden>Menu Verifikasi</button>
+<button id="b_set" onclick="tab('set')" hidden>Pengaturan</button></nav>
+<main>
+<section id="bayar">
+<div class="card"><h3>Catat Pembayaran SPP</h3><div class="row">
+<div><label>Wali Kelas</label><select id="wali" onchange="gw()"></select></div>
+<div><label>Kelas</label><input id="kls" readonly></div>
+<div><label>Siswa</label><select id="sis" onchange="rm()"></select></div>
+<div><label>Tahun Ajaran (awal)</label><input id="thn" type="number" oninput="rm()"></div>
+<div><label>Jumlah per bulan (Rp)</label><input id="jml" type="number" min="0"></div></div>
+<label>Bulan (centang bulan yang dibayar, mulai Juli)</label><div id="bl"></div>
+<br><button class="t" onclick="simpan()">Simpan Catatan</button></div>
+<div class="card"><h3>Riwayat Kelas Ini</h3><div class="wrap"><table id="rw"></table></div></div>
+</section>
+<section id="verif" hidden><div class="card"><h2>🔐 Login Koordinator SPP</h2><p style="margin:0 0 18px">Masuk untuk memverifikasi pembayaran SPP.</p>
+<input id="u" placeholder="User" autocomplete="off"><input id="p" type="password" placeholder="Password" onkeydown="if(event.key=='Enter')login()">
+<button onclick="login()">Masuk</button></div></section>
+<section id="vpanel" hidden>
+<div class="card"><div style="display:flex;justify-content:space-between;align-items:center"><h3>Menunggu Verifikasi</h3><button class="r" onclick="logout()">Keluar</button></div><div class="wrap"><table id="pend"></table></div></div>
+<div class="card"><h3>Siswa Terverifikasi</h3><div class="wrap"><table id="okt"></table></div></div>
+<div class="card"><h3>Cetak Laporan PDF (data terverifikasi)</h3><div class="row"><div><label>Kelas</label><select id="ck"></select></div><div><label>Bulan</label><select id="cb"></select></div><div><label>Tahun</label><input id="ct" type="number"></div></div>
+<br><button class="t" onclick="laporan()">Unduh Laporan PDF</button></div>
+</section>
+<section id="set" hidden>
+<div class="card"><h3>Data Wali Kelas</h3><small>Satu baris per guru: NAMA GURU;KELAS (contoh: Nama Guru, S.Pd;Kelas 1A atau 1A). Bisa tempel dari Excel.</small>
+<textarea id="tg"></textarea><br><br><button class="t" onclick="saveG()">Simpan Wali Kelas</button></div>
+<div class="card"><h3>Data Siswa (maks. 500) <span id="cnt"></span></h3><small>Satu baris per siswa: NIS;NAMA SISWA;KELAS (contoh: 1001;Budi Santoso;Kelas 1A)</small>
+<textarea id="ts" style="height:300px"></textarea><br><br><button class="t" onclick="saveS()">Simpan Siswa</button></div>
+<div class="card"><h3>Nama Verifikator</h3><small>Nama ini tercetak di bawah tanda tangan Verifikator pada tanda bukti dan laporan PDF.</small>
+<label>Nama Verifikator</label><input id="vn" placeholder="Nama lengkap beserta gelar"><br><br><button class="t" onclick="saveV()">Simpan Nama Verifikator</button></div>
+<div class="card"><h3>Cadangan Data</h3><small>Data tersimpan di browser perangkat ini. Unduh cadangan secara berkala; pulihkan di perangkat lain untuk memindahkan data.</small><br><br>
+<button class="t" onclick="backup()">Unduh Cadangan (.json)</button> <button onclick="$('rf').click()">Pulihkan dari Cadangan</button><input type="file" id="rf" accept=".json" hidden onchange="restore(this)"></div>
+<div class="card" style="border-top-color:#b91c1c"><h3>Reset Data</h3><small>Tindakan ini permanen. Unduh cadangan terlebih dahulu bila data masih diperlukan.</small><br><br>
+<button class="r" onclick="resetBayar()">Reset Riwayat Pembayaran</button> <small>Hanya riwayat pembayaran yang dihapus; data Wali Kelas, siswa, dan Nama Verifikator tetap.</small><br><br>
+<button class="r" onclick="resetAll()">Reset Semua Laporan</button> <small>Mengembalikan aplikasi seperti awal: Wali Kelas, siswa, Nama Verifikator, dan riwayat menjadi kosong.</small></div>
+</section></main><div id="msg"></div>
+<script src="assets/config.js"></script>
+<script src="assets/app.js"></script></body></html>
